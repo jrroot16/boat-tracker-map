@@ -75,5 +75,27 @@
     "status": "Stopped",
     "ais_source": "Terrestrial",
     "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-21T19:33:27.265Z",
+    "latitude": 29.370607,
+    "longitude": -94.811623,
+    "speed_knots": 0,
+    "heading": 0,
+    "course": 312,
+    "status": "Stopped",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-21T19:35:27.395Z",
+    "latitude": 29.370623,
+    "longitude": -94.811646,
+    "speed_knots": 0,
+    "heading": 0,
+    "course": 137,
+    "status": "Stopped",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
   }
 ]
