@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "timestamp": "2026-06-21T19:09:24.759Z",
+    "latitude": 29.370556,
+    "longitude": -94.811569,
+    "speed_knots": 0,
+    "heading": 0,
+    "course": 309,
+    "status": "Underway",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-21T19:12:28.150Z",
+    "latitude": 29.370577,
+    "longitude": -94.811584,
+    "speed_knots": 0,
+    "heading": 0,
+    "course": 257,
+    "status": "Underway",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
+  }
+]
