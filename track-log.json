@@ -207,5 +207,16 @@
     "status": "Underway",
     "ais_source": "Terrestrial",
     "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-21T20:11:27.818Z",
+    "latitude": 29.359501,
+    "longitude": -94.796974,
+    "speed_knots": 14.6,
+    "heading": 0,
+    "course": 125,
+    "status": "Underway",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
   }
 ]
