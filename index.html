@@ -68,8 +68,10 @@
   <div id="header">
     <h1>&#9875; New Buccaneer <span>MMSI 367136040</span></h1>
     <div id="status-bar">
+      <div><span class="stat-label">Lat </span><span class="stat-value" id="cur-lat">—</span></div>
+      <div><span class="stat-label">Lon </span><span class="stat-value" id="cur-lon">—</span></div>
       <div><span class="stat-label">Speed </span><span class="stat-value speed" id="cur-speed">—</span></div>
-      <div><span class="stat-label">Heading </span><span class="stat-value heading" id="cur-heading">—</span></div>
+      <div><span class="stat-label">COG </span><span class="stat-value heading" id="cur-heading">—</span></div>
       <div><span class="stat-label">Points </span><span class="stat-value" id="cur-count">0</span></div>
       <div><span class="stat-label">Last update </span><span class="stat-value" id="cur-time">—</span></div>
     </div>
@@ -85,9 +87,13 @@
 
     const map = L.map('map', { zoomControl: true }).setView([29.0, -89.5], 9);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
+    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '&copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
       maxZoom: 19
+    }).addTo(map);
+
+    const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19, pane: 'overlayPane'
     }).addTo(map);
 
     let trackLine = null;
@@ -122,8 +128,10 @@
         const coords = data.map(d => [d.latitude, d.longitude]);
         const latest = data[data.length - 1];
 
+        document.getElementById('cur-lat').textContent = parseFloat(latest.latitude).toFixed(6);
+        document.getElementById('cur-lon').textContent = parseFloat(latest.longitude).toFixed(6);
         document.getElementById('cur-speed').textContent = latest.speed_knots + ' kts';
-        document.getElementById('cur-heading').textContent = latest.heading + '°';
+        document.getElementById('cur-heading').textContent = latest.course + '°';
         document.getElementById('cur-count').textContent = data.length;
         document.getElementById('cur-time').textContent = formatTime(latest.timestamp);
 
