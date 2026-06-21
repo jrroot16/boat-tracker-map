@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Buccaneer — AIS Tracker</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e17; color: #e0e0e0; }
+
+    #header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px; background: #111827; border-bottom: 1px solid #1e293b;
+      flex-wrap: wrap; gap: 8px;
+    }
+    #header h1 { font-size: 18px; color: #60a5fa; }
+    #header h1 span { color: #94a3b8; font-weight: 400; font-size: 14px; margin-left: 8px; }
+    #status-bar { display: flex; gap: 20px; font-size: 13px; color: #94a3b8; flex-wrap: wrap; }
+    .stat-label { color: #64748b; }
+    .stat-value { color: #e2e8f0; font-weight: 600; }
+    .stat-value.speed { color: #34d399; }
+    .stat-value.heading { color: #fbbf24; }
+
+    #map { height: calc(100vh - 52px); width: 100%; }
+
+    .boat-icon { background: none; border: none; }
+    .boat-marker {
+      width: 24px; height: 24px;
+      background: #3b82f6; border: 3px solid #fff;
+      border-radius: 50%; box-shadow: 0 0 12px rgba(59,130,246,0.6);
+    }
+    .boat-pulse {
+      position: absolute; top: -8px; left: -8px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(59,130,246,0.3);
+      animation: pulse 2s ease-out infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    .info-popup .leaflet-popup-content-wrapper {
+      background: #1e293b; color: #e2e8f0; border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .info-popup .leaflet-popup-tip { background: #1e293b; }
+    .popup-content { font-size: 13px; line-height: 1.6; }
+    .popup-content strong { color: #60a5fa; }
+
+    #no-data {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 1000; background: #1e293b; padding: 30px 40px; border-radius: 12px;
+      text-align: center; display: none; border: 1px solid #334155;
+    }
+    #no-data h2 { color: #60a5fa; margin-bottom: 8px; }
+    #no-data p { color: #94a3b8; font-size: 14px; }
+
+    #timeline {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 1000; background: #111827ee; padding: 8px 16px; border-radius: 8px;
+      font-size: 12px; color: #94a3b8; border: 1px solid #1e293b;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <h1>&#9875; New Buccaneer <span>MMSI 367136040</span></h1>
+    <div id="status-bar">
+      <div><span class="stat-label">Speed </span><span class="stat-value speed" id="cur-speed">—</span></div>
+      <div><span class="stat-label">Heading </span><span class="stat-value heading" id="cur-heading">—</span></div>
+      <div><span class="stat-label">Points </span><span class="stat-value" id="cur-count">0</span></div>
+      <div><span class="stat-label">Last update </span><span class="stat-value" id="cur-time">—</span></div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+  <div id="no-data"><h2>Waiting for data...</h2><p>The tracker is listening for AIS signals from New Buccaneer.<br>Positions will appear here as they come in.</p></div>
+  <div id="timeline"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const DATA_URL = 'track-log.json';
+
+    const map = L.map('map', { zoomControl: true }).setView([29.0, -89.5], 9);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      maxZoom: 19
+    }).addTo(map);
+
+    let trackLine = null;
+    let boatMarker = null;
+    let pointMarkers = [];
+    let firstLoad = true;
+
+    const boatIcon = L.divIcon({
+      className: 'boat-icon',
+      html: '<div class="boat-pulse"></div><div class="boat-marker"></div>',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12]
+    });
+
+    function formatTime(ts) {
+      if (!ts) return '—';
+      const d = new Date(ts);
+      return d.toLocaleString();
+    }
+
+    async function refresh() {
+      try {
+        const res = await fetch(DATA_URL + '?t=' + Date.now());
+        const data = await res.json();
+
+        if (!data.length) {
+          document.getElementById('no-data').style.display = 'block';
+          return;
+        }
+        document.getElementById('no-data').style.display = 'none';
+
+        const coords = data.map(d => [d.latitude, d.longitude]);
+        const latest = data[data.length - 1];
+
+        document.getElementById('cur-speed').textContent = latest.speed_knots + ' kts';
+        document.getElementById('cur-heading').textContent = latest.heading + '°';
+        document.getElementById('cur-count').textContent = data.length;
+        document.getElementById('cur-time').textContent = formatTime(latest.timestamp);
+
+        document.getElementById('timeline').textContent =
+          `Tracking since ${formatTime(data[0].timestamp)} — ${data.length} positions logged`;
+
+        if (trackLine) map.removeLayer(trackLine);
+        trackLine = L.polyline(coords, {
+          color: '#3b82f6', weight: 3, opacity: 0.7, dashArray: '8 4'
+        }).addTo(map);
+
+        pointMarkers.forEach(m => map.removeLayer(m));
+        pointMarkers = [];
+
+        data.forEach((d, i) => {
+          if (i === data.length - 1) return;
+          const circle = L.circleMarker([d.latitude, d.longitude], {
+            radius: 3, color: '#3b82f6', fillColor: '#60a5fa',
+            fillOpacity: 0.6, weight: 1
+          }).addTo(map);
+
+          circle.bindPopup(
+            `<div class="popup-content">
+              <strong>${formatTime(d.timestamp)}</strong><br>
+              Speed: ${d.speed_knots} kts<br>
+              Heading: ${d.heading}° | COG: ${d.course}°<br>
+              Lat: ${parseFloat(d.latitude).toFixed(5)}<br>
+              Lon: ${parseFloat(d.longitude).toFixed(5)}
+            </div>`,
+            { className: 'info-popup' }
+          );
+          pointMarkers.push(circle);
+        });
+
+        if (boatMarker) map.removeLayer(boatMarker);
+        boatMarker = L.marker([latest.latitude, latest.longitude], { icon: boatIcon }).addTo(map);
+        boatMarker.bindPopup(
+          `<div class="popup-content">
+            <strong>&#9875; New Buccaneer</strong><br>
+            <strong>Current Position</strong><br>
+            Speed: ${latest.speed_knots} kts<br>
+            Heading: ${latest.heading}° | COG: ${latest.course}°<br>
+            Lat: ${parseFloat(latest.latitude).toFixed(5)}<br>
+            Lon: ${parseFloat(latest.longitude).toFixed(5)}<br>
+            Updated: ${formatTime(latest.timestamp)}
+          </div>`,
+          { className: 'info-popup' }
+        );
+
+        if (firstLoad) {
+          map.fitBounds(trackLine.getBounds(), { padding: [50, 50] });
+          firstLoad = false;
+        }
+      } catch (e) {
+        console.error('Refresh error:', e);
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 60000); // refresh every 60s
+  </script>
+</body>
+</html>
