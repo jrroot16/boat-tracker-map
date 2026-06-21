@@ -636,5 +636,38 @@
     "status": "Underway",
     "ais_source": "Roaming",
     "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-21T22:10:29.629Z",
+    "latitude": 29.338934,
+    "longitude": -94.76915,
+    "speed_knots": 13.1,
+    "heading": 0,
+    "course": 249,
+    "status": "Underway",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-21T22:12:29.638Z",
+    "latitude": 29.33534,
+    "longitude": -94.773697,
+    "speed_knots": 8.8,
+    "heading": 0,
+    "course": 230,
+    "status": "Underway",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-21T22:14:29.691Z",
+    "latitude": 29.331207,
+    "longitude": -94.77652,
+    "speed_knots": 8.8,
+    "heading": 0,
+    "course": 205,
+    "status": "Underway",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
   }
 ]
