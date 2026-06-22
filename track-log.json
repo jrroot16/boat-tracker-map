@@ -3441,5 +3441,27 @@
     "status": "Underway",
     "ais_source": "Terrestrial",
     "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-22T16:19:25.224Z",
+    "latitude": 29.355694,
+    "longitude": -94.722527,
+    "speed_knots": 0,
+    "heading": 0,
+    "course": 309,
+    "status": "Underway",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-22T16:24:25.205Z",
+    "latitude": 29.355721,
+    "longitude": -94.722771,
+    "speed_knots": 0,
+    "heading": 0,
+    "course": 278,
+    "status": "Underway",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
   }
 ]
