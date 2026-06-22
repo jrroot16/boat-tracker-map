@@ -3287,5 +3287,16 @@
     "status": "Stopped",
     "ais_source": "Terrestrial",
     "mmsi": "367136040"
+  },
+  {
+    "timestamp": "2026-06-22T15:29:24.126Z",
+    "latitude": 29.346113,
+    "longitude": -94.786118,
+    "speed_knots": 0,
+    "heading": 0,
+    "course": 271,
+    "status": "Stopped",
+    "ais_source": "Terrestrial",
+    "mmsi": "367136040"
   }
 ]
