@@ -19380,5 +19380,16 @@
     "status": "Underway",
     "ais_source": "Roaming",
     "mmsi": "366951590"
+  },
+  {
+    "timestamp": "2026-07-08T23:15:03.307Z",
+    "latitude": 29.33864,
+    "longitude": -94.704201,
+    "speed_knots": 17.1,
+    "heading": 0,
+    "course": 283,
+    "status": "Underway",
+    "ais_source": "Roaming",
+    "mmsi": "366951590"
   }
 ]
