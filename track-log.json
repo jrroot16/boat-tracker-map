@@ -27036,5 +27036,16 @@
     "status": "Stopped",
     "ais_source": "Roaming",
     "mmsi": "366951590"
+  },
+  {
+    "timestamp": "2026-07-16T02:50:11.655Z",
+    "latitude": 29.310591,
+    "longitude": -94.790192,
+    "speed_knots": 0,
+    "heading": 0,
+    "course": 0,
+    "status": "Stopped",
+    "ais_source": "Roaming",
+    "mmsi": "366951590"
   }
 ]
