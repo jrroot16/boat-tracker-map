@@ -28301,5 +28301,16 @@
     "status": "Underway",
     "ais_source": "Roaming",
     "mmsi": "366951590"
+  },
+  {
+    "timestamp": "2026-07-16T12:52:20.534Z",
+    "latitude": 29.299726,
+    "longitude": -94.682785,
+    "speed_knots": 16,
+    "heading": 0,
+    "course": 151,
+    "status": "Underway",
+    "ais_source": "Roaming",
+    "mmsi": "366951590"
   }
 ]
