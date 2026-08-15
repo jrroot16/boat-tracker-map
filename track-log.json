@@ -59607,5 +59607,16 @@
     "status": "Class B",
     "ais_source": "Terrestrial",
     "mmsi": "366951590"
+  },
+  {
+    "timestamp": "2026-08-15T23:18:17.952Z",
+    "latitude": 29.329493,
+    "longitude": -94.777588,
+    "speed_knots": 9.8,
+    "heading": 0,
+    "course": 197,
+    "status": "Class B",
+    "ais_source": "Terrestrial",
+    "mmsi": "366951590"
   }
 ]
