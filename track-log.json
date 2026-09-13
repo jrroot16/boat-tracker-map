@@ -98965,5 +98965,27 @@
     "status": "Class B",
     "ais_source": "Terrestrial",
     "mmsi": "366951590"
+  },
+  {
+    "timestamp": "2026-09-13T12:05:04.079Z",
+    "latitude": 29.310726,
+    "longitude": -94.790283,
+    "speed_knots": 0.1,
+    "heading": 0,
+    "course": 0,
+    "status": "Class B",
+    "ais_source": "Roaming",
+    "mmsi": "366951590"
+  },
+  {
+    "timestamp": "2026-09-13T12:07:04.213Z",
+    "latitude": 29.31588,
+    "longitude": -94.786385,
+    "speed_knots": 10.1,
+    "heading": 0,
+    "course": 48,
+    "status": "Class B",
+    "ais_source": "Roaming",
+    "mmsi": "366951590"
   }
 ]
