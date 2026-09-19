@@ -108887,5 +108887,16 @@
     "status": "Class B",
     "ais_source": "Roaming",
     "mmsi": "366951590"
+  },
+  {
+    "timestamp": "2026-09-19T12:41:10.324Z",
+    "latitude": 29.338717,
+    "longitude": -94.702614,
+    "speed_knots": 17.2,
+    "heading": 0,
+    "course": 113,
+    "status": "Class B",
+    "ais_source": "Roaming",
+    "mmsi": "366951590"
   }
 ]
